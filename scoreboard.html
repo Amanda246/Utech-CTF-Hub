@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scoreboard - UTech CTF Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-dark text-light">
+<div id="nav-placeholder"></div>
+<div class="container mt-3" id="alert-container"></div>
+
+<main class="container py-4">
+  <h2 class="mb-4"><i class="bi bi-trophy"></i> Scoreboard</h2>
+  <div id="scoreboard-content"></div>
+</main>
+
+<footer class="bg-black text-center py-3 border-top border-success mt-auto">
+  <p class="text-muted mb-0"><i class="bi bi-shield-lock"></i> UTech CTF Hub | CNS3005 Ethical Hacking | <span class="text-success">&copy; 2026</span></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  initPage();
+
+  const users = getScoreboard();
+  const container = document.getElementById('scoreboard-content');
+
+  if (users.length === 0) {
+    container.innerHTML = '<div class="alert alert-secondary">No scores yet — be the first to solve a challenge!</div>';
+  } else {
+    const rankIcon = (i) => {
+      if (i === 0) return '<i class="bi bi-trophy-fill text-warning"></i>';
+      if (i === 1) return '<i class="bi bi-trophy-fill text-secondary"></i>';
+      if (i === 2) return '<i class="bi bi-trophy-fill" style="color:#cd7f32"></i>';
+      return i + 1;
+    };
+    const rankClass = (i) => {
+      if (i === 0) return 'scoreboard-rank-1';
+      if (i === 1) return 'scoreboard-rank-2';
+      if (i === 2) return 'scoreboard-rank-3';
+      return '';
+    };
+    container.innerHTML = `
+      <div class="table-responsive">
+        <table class="table table-dark table-hover scoreboard-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Username</th><th>Points</th><th>Challenges Solved</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${users.map((u, i) => `
+              <tr class="${rankClass(i)}">
+                <td>${rankIcon(i)}</td>
+                <td>${u.username}</td>
+                <td class="text-success fw-bold">${u.totalPoints}</td>
+                <td>${u.solveCount}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+</script>
+</body>
+</html>

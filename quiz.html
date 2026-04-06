@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz - UTech CTF Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-dark text-light">
+<div id="nav-placeholder"></div>
+<div class="container mt-3" id="alert-container"></div>
+
+<main class="container py-4" id="main-content">
+  <div class="text-center py-5 text-muted">Loading...</div>
+</main>
+
+<footer class="bg-black text-center py-3 border-top border-success mt-auto">
+  <p class="text-muted mb-0"><i class="bi bi-shield-lock"></i> UTech CTF Hub | CNS3005 Ethical Hacking | <span class="text-success">&copy; 2026</span></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  initPage();
+  if (!requireLogin()) { throw new Error('Not logged in — redirecting'); }
+
+  const quizId = parseInt(getQueryParam('id'));
+  const quiz = QUIZZES[quizId];
+
+  if (!quiz) {
+    document.getElementById('main-content').innerHTML = '<div class="alert alert-danger">Quiz not found.</div>';
+  } else {
+    document.title = quiz.name + ' - UTech CTF Hub';
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    const labels = ['A', 'B', 'C', 'D'];
+    document.getElementById('main-content').innerHTML = `
+      <h2 class="mb-4"><i class="bi bi-patch-question"></i> ${quiz.name}</h2>
+      <form id="quiz-form">
+        ${quiz.questions.map((q, qi) => `
+          <div class="card bg-dark border-secondary mb-3">
+            <div class="card-body">
+              <p class="text-light fw-bold">${qi + 1}. ${q.q}</p>
+              ${q.a.map((opt, oi) => `
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="q${qi}" value="${oi}" id="q${qi}_${oi}" required>
+                  <label class="form-check-label text-muted" for="q${qi}_${oi}">${labels[oi]}. ${opt}</label>
+                </div>`).join('')}
+            </div>
+          </div>`).join('')}
+        <button type="submit" class="btn btn-success">Submit Quiz</button>
+        <a href="quizzes.html" class="btn btn-outline-secondary ms-2">Cancel</a>
+      </form>`;
+
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      submitQuiz();
+    });
+  }
+
+  function submitQuiz() {
+    const session = getSession();
+    const labels = ['A', 'B', 'C', 'D'];
+    let score = 0;
+    const userAnswers = [];
+
+    quiz.questions.forEach((q, qi) => {
+      const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+      const answer = selected ? parseInt(selected.value) : -1;
+      userAnswers.push(answer);
+      if (answer === q.correct) score++;
+    });
+
+    const total = quiz.questions.length;
+    const pointsEarned = score * 10;
+
+    // Save attempt
+    const attempts = getQuizAttempts();
+    attempts.push({ userId: session.userId, quizId, score, attemptedAt: new Date().toISOString() });
+    saveQuizAttempts(attempts);
+    updateUserPoints(session.userId, pointsEarned);
+
+    // Show results
+    let performance = '';
+    if (score === total) performance = 'Perfect score! Outstanding work!';
+    else if (score >= total * 0.8) performance = 'Great job! You\'re doing well!';
+    else if (score >= total * 0.6) performance = 'Good effort! Keep learning!';
+    else performance = 'Keep practicing! Review the Learn section.';
+
+    const wrongAnswers = quiz.questions
+      .map((q, qi) => ({ q, qi, userAns: userAnswers[qi] }))
+      .filter(({ q, userAns }) => userAns !== q.correct);
+
+    const wrongSection = wrongAnswers.length > 0 ? `
+      <div class="card bg-dark border-danger mt-4">
+        <div class="card-header d-flex align-items-center gap-2">
+          <i class="bi bi-x-circle-fill text-danger"></i>
+          <h5 class="mb-0">Questions You Got Wrong (${wrongAnswers.length})</h5>
+        </div>
+        <div class="card-body">
+          ${wrongAnswers.map(({ q, qi, userAns }) => `
+            <div class="mb-3 pb-3 border-bottom border-secondary">
+              <p class="fw-bold">${qi + 1}. ${q.q}</p>
+              <div class="ms-3">
+                ${q.a.map((opt, oi) => {
+                  const isCorrect = oi === q.correct;
+                  const isUser = oi === userAns;
+                  let cls = 'text-muted';
+                  if (isCorrect) cls = 'text-success fw-bold';
+                  else if (isUser) cls = 'text-danger';
+                  return `<div class="${cls} mb-1">
+                    ${labels[oi]}. ${opt}
+                    ${isCorrect ? '<i class="bi bi-check-circle-fill text-success ms-1"></i><span class="badge bg-success ms-1">Correct</span>' : ''}
+                    ${isUser && !isCorrect ? '<i class="bi bi-x-circle-fill text-danger ms-1"></i><span class="badge bg-danger ms-1">Your answer</span>' : ''}
+                  </div>`;
+                }).join('')}
+              </div>
+              ${q.explanation ? `<div class="alert alert-info mt-2 mb-0 small"><strong>Explanation:</strong> ${q.explanation}</div>` : ''}
+            </div>`).join('')}
+        </div>
+      </div>` : '';
+
+    document.getElementById('main-content').innerHTML = `
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card bg-dark border-success">
+            <div class="card-body text-center p-5">
+              <i class="bi bi-trophy-fill text-warning" style="font-size:4rem;"></i>
+              <h2 class="text-success mt-3">${quiz.name} Completed!</h2>
+              <div class="my-4">
+                <h1 class="display-3 text-light">${score}/${total}</h1>
+                <p class="text-muted">${performance}</p>
+              </div>
+              <div class="alert alert-success">
+                <i class="bi bi-star-fill"></i> You earned ${pointsEarned} points!
+              </div>
+              <div class="mt-4">
+                <a href="quiz.html?id=${quizId}" class="btn btn-outline-warning me-2">
+                  <i class="bi bi-arrow-clockwise"></i> Retake Quiz
+                </a>
+                <a href="learn.html" class="btn btn-outline-info me-2"><i class="bi bi-book"></i> Learn More</a>
+                <a href="challenges.html" class="btn btn-ctf"><i class="bi bi-flag"></i> Try Challenges</a>
+              </div>
+            </div>
+          </div>
+          ${wrongSection}
+          <div class="text-center mt-4">
+            <a href="quizzes.html" class="btn btn-outline-secondary"><i class="bi bi-list"></i> All Quizzes</a>
+          </div>
+        </div>
+      </div>`;
+  }
+</script>
+</body>
+</html>

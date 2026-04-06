@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTech CTF Hub - Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-dark text-light">
+<div id="nav-placeholder"></div>
+<div class="container mt-3" id="alert-container"></div>
+
+<main class="container py-4">
+  <!-- Hero -->
+  <div class="text-center py-5">
+    <h1 class="display-4 terminal-text"><i class="bi bi-terminal-fill"></i> UTech CTF Hub</h1>
+    <p class="lead text-muted">Capture The Flag Learning Platform | CNS3005 Ethical Hacking</p>
+    <p class="terminal-prompt text-success">Learn. Hack. Defend.</p>
+    <div class="mt-4" id="hero-buttons"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row text-center my-5">
+    <div class="col-md-3 mb-3">
+      <div class="card bg-dark border-success">
+        <div class="card-body"><h2 class="text-success">18+</h2><p class="text-muted">Challenges</p></div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-dark border-info">
+        <div class="card-body"><h2 class="text-info">6</h2><p class="text-muted">Categories</p></div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-dark border-warning">
+        <div class="card-body"><h2 class="text-warning">3</h2><p class="text-muted">Quizzes</p></div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card bg-dark border-danger">
+        <div class="card-body"><h2 class="text-danger">8+</h2><p class="text-muted">Learn Topics</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="my-5">
+    <h2 class="text-center mb-4"><i class="bi bi-grid"></i> Challenge Categories</h2>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-globe display-4 text-info"></i>
+            <h5 class="card-title mt-3">Web Hacking</h5>
+            <p class="card-text text-muted">SQL Injection, XSS, CSRF and more web vulnerabilities</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-lock display-4" style="color:#9D4EDD;"></i>
+            <h5 class="card-title mt-3">Cryptography</h5>
+            <p class="card-text text-muted">Encoding, encryption, hashing and cipher challenges</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-hdd-network display-4 text-warning"></i>
+            <h5 class="card-title mt-3">Network Security</h5>
+            <p class="card-text text-muted">Packet analysis, protocols, and network forensics</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-code-slash display-4 text-success"></i>
+            <h5 class="card-title mt-3">Reverse Engineering</h5>
+            <p class="card-text text-muted">Analyze code, decode obfuscation, find hidden secrets</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-people display-4 text-danger"></i>
+            <h5 class="card-title mt-3">Social Engineering</h5>
+            <p class="card-text text-muted">Phishing detection, pretexting, and human factors</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card challenge-card h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-shield-check display-4 text-primary"></i>
+            <h5 class="card-title mt-3">Data Security</h5>
+            <p class="card-text text-muted">Password security, access control, and data protection</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="my-5 py-4 bg-black rounded">
+    <div class="container">
+      <h2 class="text-center mb-4"><i class="bi bi-question-circle"></i> How It Works</h2>
+      <div class="row">
+        <div class="col-md-4 text-center"><div class="display-4 text-success mb-2">1</div><h5>Learn</h5><p class="text-muted">Study the topic cards to understand security concepts</p></div>
+        <div class="col-md-4 text-center"><div class="display-4 text-success mb-2">2</div><h5>Solve</h5><p class="text-muted">Apply your knowledge to solve CTF challenges</p></div>
+        <div class="col-md-4 text-center"><div class="display-4 text-success mb-2">3</div><h5>Earn</h5><p class="text-muted">Submit flags to earn points and climb the scoreboard</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center my-5">
+    <h3 class="mb-3">Ready to test your skills?</h3>
+    <a href="challenges.html" class="btn btn-outline-success btn-lg"><i class="bi bi-flag-fill"></i> Browse Challenges</a>
+    <a href="learn.html" class="btn btn-outline-info btn-lg ms-2"><i class="bi bi-book"></i> Start Learning</a>
+  </div>
+</main>
+
+<footer class="bg-black text-center py-3 border-top border-success mt-auto">
+  <div class="container">
+    <p class="text-muted mb-0"><i class="bi bi-shield-lock"></i> UTech CTF Hub | CNS3005 Ethical Hacking | <span class="text-success">&copy; 2026</span></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  initPage();
+  const session = getSession();
+  document.getElementById('hero-buttons').innerHTML = session
+    ? `<a href="challenges.html" class="btn btn-ctf btn-lg"><i class="bi bi-flag"></i> Start Hacking</a>`
+    : `<a href="register.html" class="btn btn-ctf btn-lg me-2"><i class="bi bi-person-plus"></i> Get Started</a>
+       <a href="login.html" class="btn btn-outline-success btn-lg"><i class="bi bi-box-arrow-in-right"></i> Login</a>`;
+</script>
+</body>
+</html>

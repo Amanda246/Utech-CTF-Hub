@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quizzes - UTech CTF Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-dark text-light">
+<div id="nav-placeholder"></div>
+<div class="container mt-3" id="alert-container"></div>
+
+<main class="container py-4">
+  <h2 class="mb-1"><i class="bi bi-patch-question"></i> Quizzes</h2>
+  <p class="text-muted mb-4">Test your knowledge on each topic. Each correct answer earns 10 points.</p>
+  <div class="row" id="quizzes-grid"></div>
+</main>
+
+<footer class="bg-black text-center py-3 border-top border-success mt-auto">
+  <p class="text-muted mb-0"><i class="bi bi-shield-lock"></i> UTech CTF Hub | CNS3005 Ethical Hacking | <span class="text-success">&copy; 2026</span></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  initPage();
+  if (!requireLogin()) { throw new Error('Not logged in — redirecting'); }
+
+  const session = getSession();
+  const attempts = getQuizAttempts().filter(a => a.userId === session.userId);
+
+  function getBestScore(quizId) {
+    const quizAttempts = attempts.filter(a => a.quizId === quizId);
+    if (quizAttempts.length === 0) return null;
+    return Math.max(...quizAttempts.map(a => a.score));
+  }
+
+  document.getElementById('quizzes-grid').innerHTML = Object.entries(QUIZZES).map(([id, quiz]) => {
+    const count = quiz.questions.length;
+    const best = getBestScore(parseInt(id));
+    const bestSection = best !== null
+      ? `<div class="alert alert-success py-1 px-2 mb-3 small">
+           <i class="bi bi-check-circle-fill"></i> Best score: ${best}/${count} (${Math.round(best/count*100)}%)
+         </div>` : '';
+    const btnText = best !== null
+      ? `<i class="bi bi-arrow-clockwise"></i> Retake Quiz`
+      : `<i class="bi bi-play-fill"></i> Start Quiz`;
+    return `
+      <div class="col-md-4 mb-4">
+        <div class="card bg-dark border-${quiz.color} h-100">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi ${quiz.icon} text-${quiz.color} me-2" style="font-size:1.8rem;"></i>
+              <h5 class="card-title mb-0">${quiz.name}</h5>
+            </div>
+            <p class="text-muted small mb-2">${quiz.desc}</p>
+            <p class="text-muted small mb-3">
+              <i class="bi bi-list-check"></i> ${count} questions &nbsp;|&nbsp;
+              <i class="bi bi-star"></i> ${count * 10} pts possible
+            </p>
+            ${bestSection}
+            <a href="quiz.html?id=${id}" class="btn btn-${quiz.color} mt-auto ${quiz.color === 'warning' ? 'text-dark' : ''}">
+              ${btnText}
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+</script>
+</body>
+</html>

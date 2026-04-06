@@ -1,0 +1,127 @@
+/*
+ * UTech CTF Hub - Custom Dark Hacking Theme
+ * CNS3005 Ethical Hacking Assignment 2
+ */
+
+:root {
+    --ctf-green: #00FF41;
+    --ctf-green-dark: #00CC33;
+    --ctf-cyan: #00D4FF;
+    --ctf-purple: #9D4EDD;
+    --ctf-red: #FF3333;
+    --ctf-bg: #0a0a0a;
+    --ctf-card: #1a1a1a;
+    --ctf-border: #2a2a2a;
+}
+
+body {
+    background-color: var(--ctf-bg);
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.challenge-card {
+    background-color: var(--ctf-card);
+    border: 1px solid var(--ctf-border);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.challenge-card:hover {
+    border-color: var(--ctf-green);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+    transform: translateY(-2px);
+}
+
+.flag-input {
+    font-family: 'Consolas', 'Monaco', monospace;
+    background-color: var(--ctf-card);
+    border: 2px solid var(--ctf-border);
+    color: var(--ctf-green);
+}
+
+.flag-input:focus {
+    border-color: var(--ctf-green);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    background-color: var(--ctf-card);
+    color: var(--ctf-green);
+}
+
+.btn-ctf {
+    background-color: var(--ctf-green);
+    color: #000;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-ctf:hover {
+    background-color: var(--ctf-green-dark);
+    color: #000;
+}
+
+.scoreboard-table { background-color: var(--ctf-card); }
+
+.scoreboard-table th {
+    background-color: #000;
+    color: var(--ctf-green);
+    border-bottom: 2px solid var(--ctf-green);
+}
+
+.scoreboard-rank-1 { background-color: rgba(255,215,0,0.1); border-left: 3px solid gold; }
+.scoreboard-rank-2 { background-color: rgba(192,192,192,0.1); border-left: 3px solid silver; }
+.scoreboard-rank-3 { background-color: rgba(205,127,50,0.1); border-left: 3px solid #cd7f32; }
+
+.jeopardy-tile {
+    background-color: #0044cc;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.jeopardy-tile:hover { background-color: #0066ff; transform: scale(1.05); }
+.jeopardy-tile.answered { background-color: #333; cursor: not-allowed; }
+
+.terminal-text {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: var(--ctf-green);
+}
+
+.terminal-prompt::before { content: ">_ "; color: var(--ctf-green); }
+
+.topic-card {
+    background-color: var(--ctf-card);
+    border: 1px solid var(--ctf-border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.topic-card:hover {
+    border-color: var(--ctf-cyan);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+}
+
+.pulse-success { animation: pulse-green 1s ease-out; }
+
+@media (max-width: 768px) {
+    .jeopardy-tile { font-size: 1rem; padding: 15px; }
+}
