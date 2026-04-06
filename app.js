@@ -21,7 +21,7 @@ function renderNav() {
       <li class="nav-item">
         <span class="nav-link text-info"><i class="bi bi-person"></i> ${session.username}</span>
       </li>
-      ${session.role === 'admin' ? `<li class="nav-item"><a class="nav-link text-warning" href="${prefix}admin/dashboard.html"><i class="bi bi-gear"></i> Admin</a></li>` : ''}
+      ${session.role === 'admin' ? `<li class="nav-item"><a class="nav-link text-warning" href="${prefix}dashboard.html"><i class="bi bi-gear"></i> Admin</a></li>` : ''}
       <li class="nav-item">
         <a class="nav-link" href="#" onclick="handleLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
       </li>`;
